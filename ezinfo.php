@@ -1,9 +1,9 @@
 <?php
 /**
- * QH AutoSave - content/edit form autosave extension for eZ Publish 
- * Written by Bruce Morrison <bruce@stuffandcontent.com>
- * Copyright (C) 2008. Bruce Morrison.  All rights reserved.
- * http://www.stuffandcontent.com
+ * QH JS INI Loader - loading of eZ Publish INI file for Javascript projects
+ * Written by NGUYEN DINH Quoc-Huy
+ * Copyright (C) 2011. NGUYEN DINH Quoc-Huy. All rights reserved.
+ * http://www.quoc-huy.com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,12 +19,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-class QHJSINILoaderSaveInfo
+class QHJSINILoaderInfo
 {
     static function info()
     {
         return array(
-            'Name' => "QH JS INI Loader or eZ Publish",
+            'Name' => "QH JS INI Loader for eZ Publish",
             'Version' => "1.0",
             'Author' => "<a href='http://www.quoc-huy.com/'>Quoc-Huy</a>",
             'Copyright' => "Copyright (C) 2011 Quoc-Huy NGUYEN DINH",
