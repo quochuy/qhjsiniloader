@@ -50,13 +50,13 @@ class qhJSINILoaderServerFunctions extends ezjscServerFunctions
         foreach( $availableLoaders as $loader )
         {
             $loaderParameters = $ini->variable( $loader, 'Parameters' );
-            $useLocales = $ini->variable( $loader, 'UseLocales' );
+            $usei18n = $ini->variable( $loader, 'Usei18n' );
 
-            if( $useLocales == 'enabled' )
+            if( $usei18n == 'enabled' )
             {
                 $tpl = eZTemplate::factory();
-                $loaderParameters['locales'] = $tpl->fetch( 'design:qhjsiniloader/'. $loader .'_locales.tpl' );
-                eZLog::write( 'design:qhjsiniloader/'. $loader .'_locales.tpl' );
+                $loaderParameters['i18n'] = $tpl->fetch( 'design:qhjsiniloader/'. $loader .'_i18n.tpl' );
+                eZLog::write( 'design:qhjsiniloader/'. $loader .'_i18n.tpl' );
             }
 
             $qhJSINILoaderConfig[$loader] = $loaderParameters;
