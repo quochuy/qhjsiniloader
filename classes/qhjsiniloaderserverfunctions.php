@@ -55,8 +55,8 @@ class qhJSINILoaderServerFunctions extends ezjscServerFunctions
             if( $usei18n == 'enabled' )
             {
                 $tpl = eZTemplate::factory();
-                $loaderParameters['i18n'] = $tpl->fetch( 'design:qhjsiniloader/'. $loader .'_i18n.tpl' );
-                eZLog::write( 'design:qhjsiniloader/'. $loader .'_i18n.tpl' );
+                $i18nJSON = str_replace( "\n", '', $tpl->fetch( 'design:qhjsiniloader/'. $loader .'_i18n.tpl' ) );
+                $loaderParameters['i18n'] = json_decode( $i18nJSON );
             }
 
             $qhJSINILoaderConfig[$loader] = $loaderParameters;
