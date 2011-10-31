@@ -1,0 +1,65 @@
+QHJSINILoader
+=========
+An ezjscore jQuery API for javascript projects that needs to load parameters from eZ Publish INI file.
+As you might have multiple JS projects, you might want to customise some of their features. eZ Publish INI files are great for holding custom parameters but they cannot be loaded by a javascript file. So you need an Ajax call that then request a PHP script which in turns loads the INI file.
+
+One issue could be that you will end up with too many Ajax calls if those projects are loaded on the same page.
+
+So I've started this little extension by externalising the feature from qhautosave.
+
+Installation
+---------
+Install the eZ Package and activate the extension in site.ini.
+
+Create an override for qhjsiniloader.ini:
+        
+        [QHJSINILoaderSettings]
+        # Add your loader here
+        AvailableLoaders[]=my_project
+
+        # [my_project]
+        # 
+        # Add your custom parameters here
+        Parameters[parm1_name]=parm1_value
+        Parameters[parm2_name]=parm2_value
+
+        #
+        # If enabled, will load design:qhjsiniloader/my_project_i18n.tpl
+        Usei18n=enabled
+
+Usage:
+------
+In your js file:
+
+        QHJSINILoader.init( 'my_project', callback_function );
+
+The configs values are in JSON format in:
+
+        QHJSINILoader.config
+
+Translations support:
+------------------
+Override qhjsiniloader/my_project_i18n.tpl into your extension folder:
+extension/**my_project**/design/yourdesign/templates/qhjsiniloader/**my_project**_i18n.tpl
+
+(where **my_project** is the name of your extension as set in qhjsiniloader.ini)
+
+This template file should output a JSON valid content. Here is an example taken from my other project QH AutoSave:
+
+        {ldelim}
+        "active":"{'Autosave: active!'|i18n('design/standard/qhjsiniloader')}",
+        "no_changes":"{'Autosave: no changes!'|i18n('design/standard/qhjsiniloader')}",
+        "in_process":"{'Autosave: in process...'|i18n('design/standard/qhjsiniloader')}",
+        "done":"{'Autosave: done!'|i18n('design/standard/qhjsiniloader')}"
+        {rdelim}
+
+Back in your js file, the translated texts are stored in QHJSINILoader.i18n. From the example above, you will get:
+
+        var active_text = QHJSINILoader.i18n.active;
+        var no_changes_text = QHJSINILoader.i18n.no_changes;
+        var in_process_text = QHJSINILoader.i18n.in_process;
+        var done_text = QHJSINILoader.i18n.done;
+
+GitHub
+------
+http://github.com/quochuy/qhjsiniloader
