@@ -36,38 +36,71 @@ class qhJSINILoaderServerFunctions extends ezjscServerFunctions
     /**
      * Load INI configuration for the autosave feature
      *
-     * @return JSON 
+     * @return JSON
      */
-    public static function configload()
+    public static function configload( )
     {
         $ini = eZINI::instance( 'qhjsiniloader.ini' );
-        $qhJSINILoaderConfig = array();
+        $qhJSINILoaderConfig = array( );
 
-	    /*
-	     * Loading INI settings
-	     */
-        $availableLoaders = $ini->variable( 'QHJSINILoaderSettings', 'AvailableLoaders' );
-        foreach( $availableLoaders as $loader )
+        /*
+         * Loading INI settings
+         */
+        $availableSets = $ini->variable( 'QHJSINILoaderSettings', 'AvailableSets' );
+        foreach( $availableSets as $availableSet )
         {
-            $loaderParameters = $ini->variable( $loader, 'Parameters' );
-            $usei18n = $ini->variable( $loader, 'Usei18n' );
+            $availableSetParameters = array( );
 
-            if( $usei18n == 'enabled' )
+            $availableINIConfigs = $ini->variable( $availableSet, 'AvailableINIConfigs' );
+            foreach( $availableINIConfigs as $availableINIConfig )
             {
-                $tpl = eZTemplate::factory();
-                $i18nJSON = str_replace( "\n", '', $tpl->fetch( 'design:qhjsiniloader/'. $loader .'_i18n.tpl' ) );
-                $loaderParameters['i18n'] = json_decode( $i18nJSON );
+                list( $iniFile, $iniBloc, $blocVariables ) = explode( '/', $availableINIConfig );
+
+                $availableINI = eZINI::instance( $iniFile );
+
+                if( !empty( $iniBloc ) )
+                {
+                    if( !empty( $blocVariables ) )
+                    {
+                        $availableVariables = explode( ',', $blocVariables );
+                        foreach( $availableVariables as $availableVariable )
+                        {
+                            $availableSetParameters[$availableVariable] = $availableINI->variable( $iniBloc, $availableVariable );
+                        }
+                    }
+                    else
+                    // Loads all variables from a bloc
+                    {
+                        $availableSetParameters = $availableINI->group( $iniBloc );
+                    }
+                }
+                else
+                // Loads the entire INI file
+                {
+                    $availableBlocs = $availableINI->groups( );
+                    foreach( $availableBlocs as $availableBloc )
+                    {
+                        $availableSetParameters[$availableBloc] = $availableINI->group( $availableBloc );
+                    }
+                }
             }
 
-            $qhJSINILoaderConfig[$loader] = $loaderParameters;
+            $usei18n = $ini->variable( $availableSet, 'Usei18n' );
+            if( $usei18n == 'enabled' )
+            {
+                $tpl = eZTemplate::factory( );
+                $i18nJSON = str_replace( "\n", '', $tpl->fetch( 'design:qhjsiniloader/' . $availableSet . '_i18n.tpl' ) );
+                $availableSetParameters['i18n'] = json_decode( $i18nJSON );
+            }
+
+            $qhJSINILoaderConfig[$availableSet] = $availableSetParameters;
         }
 
-	    /*
-	     * Encode and return in a result in JSON format
-	     */
+        /*
+         * Encode and return in a result in JSON format
+         */
         return json_encode( $qhJSINILoaderConfig );
     }
 
 }
-
 ?>

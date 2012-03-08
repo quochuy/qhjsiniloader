@@ -11,21 +11,7 @@ Installation
 ---------
 Install the eZ Package and activate the extension in site.ini.
 
-Create an override for qhjsiniloader.ini:
-        
-        [QHJSINILoaderSettings]
-        # Add your loader here
-        AvailableLoaders[]=my_project
-
-        # [my_project]
-        # 
-        # Add your custom parameters here
-        Parameters[parm1_name]=parm1_value
-        Parameters[parm2_name]=parm2_value
-
-        #
-        # If enabled, will load design:qhjsiniloader/my_project_i18n.tpl
-        Usei18n=enabled
+Create an override for qhjsiniloader.ini (check the file for more details)
 
 Usage:
 ------
