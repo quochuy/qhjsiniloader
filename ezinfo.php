@@ -25,7 +25,7 @@ class QHJSINILoaderInfo
     {
         return array(
             'Name' => "QH JS INI Loader for eZ Publish",
-            'Version' => "1.1",
+            'Version' => "1.2",
             'Author' => "<a href='http://www.quoc-huy.com/'>Quoc-Huy</a>",
             'Copyright' => "Copyright (C) 2011 Quoc-Huy NGUYEN DINH",
             'License' => "GNU General Public License v2.0"
