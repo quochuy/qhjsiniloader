@@ -1,23 +1,34 @@
-var QHJSINILoader = new function() {
-    this.initialized = false;
-    this.config = {};
+var QHJSINILoader = {
+    initialized: false,
+    config: {},
+    
+    call: function(config_set, callback) {
+        var configToReturn = {
+            from_loader: QHJSINILoader.config[config_set],
+            from_ini: QHJSINILoader.config['loaded_configs']
+        };
 
-    this.init = function( loader_name, callback ) {
-        if( this.initialized ) {
-            callback( this.config[loader_name] );
+        callback(configToReturn);
+    },
+
+    init: function(config_set, callback) {
+        if( QHJSINILoader.initialized ) {
+            QHJSINILoader.call(config_set, callback);
         } else {
             // Load the config from qhautosave.ini via ezjscore in JSON format
             $.ez( 'qhjsiniloader::configload', '', function( ezp_data ) {
 
                 // If any error
-                if ( ezp_data.error_text ) {
+                if (ezp_data.error_text) {
                     console.log( 'ezjscore ajax error in qhjsiniloader::configload' );
                 } else {
-                    this.initialized = true;
-                    this.config = jQuery.parseJSON( ezp_data.content );
-                    callback( this.config[loader_name] );
+                    QHJSINILoader.initialized = true;
+                    QHJSINILoader.config = jQuery.parseJSON(ezp_data.content);
                 }
-            });        
-        }
+                
+                QHJSINILoader.call(config_set, callback);
+            });
+
+        }        
     }
 }
